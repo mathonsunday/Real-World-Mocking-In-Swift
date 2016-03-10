@@ -100,3 +100,31 @@ struct MockTimeMachine: TimeMachine {
     }
 }
 
+class VideoUploadManager {
+    static let sharedInstance = VideoUploadManager()
+}
+
+class TimeMachineAPI {
+    func uploadVideo(videoRecording: VideoRecording) {
+        VideoUploadManager.sharedInstance.upload(videoRecording: self.videoRecording, completion: { (error) -> Void in
+            if let error = error {
+                Log.error(error.localizedDescription)
+            }
+        })
+    }
+}
+
+class VideoCaptureManager: NSObject {
+    var userDefaults: UserDefaultsProtocol
+
+    //MARK: - Initializers
+    override init() {
+        self.userDefaults = UserDefaults()
+    }
+
+    convenience init(userDefaults: UserDefaultsProtocol) {
+        self.init()
+        self.userDefaults = userDefaults
+    }
+}
+
